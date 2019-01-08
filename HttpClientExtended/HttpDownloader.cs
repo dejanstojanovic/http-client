@@ -20,25 +20,18 @@ namespace HttpClientExtended
 
                     using (Stream contentStream = await response.Content.ReadAsStreamAsync())
                     {
-                        await ReadStream(contentStream);
-                        async Task ReadStream(Stream sourceStream)
+                        var read = 1;
+                        while (read > 0)
                         {
                             var buffer = new byte[bufferSize];
-                            var read = await sourceStream.ReadAsync(buffer, 0, buffer.Length);
-                            if (read > 0)
+                            read = await contentStream.ReadAsync(buffer, 0, buffer.Length);
+                            await destinationStream.WriteAsync(buffer, 0, read);
+                            if (HttpDownloadEvent != null)
                             {
-                                await destinationStream.WriteAsync(buffer, 0, read);
-                                if (HttpDownloadEvent != null)
-                                {
-                                    this.HttpDownloadEvent(new HttpDownloadEventArgs(size: contentLength, downloaded: destinationStream.Length));
-                                }
-                                await ReadStream(sourceStream);
+                                this.HttpDownloadEvent(new HttpDownloadEventArgs(size: contentLength, downloaded: destinationStream.Length));
                             }//if
-                            else
-                            {
-                                await destinationStream.FlushAsync();
-                            }//else
-                        }//ReadStream
+                        }//while
+                        await destinationStream.FlushAsync();
                     }//using
                 }//using
             }//using

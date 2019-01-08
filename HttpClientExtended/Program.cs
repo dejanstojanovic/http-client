@@ -16,7 +16,7 @@ namespace HttpClientExtended
 
             using (var destination = new FileStream(@"D:\Temp\my-file.mp3", FileMode.Create, FileAccess.Write, FileShare.None, bufferSize, true)) {
                 await downloader.DownloadAsync(
-                    url: new Uri("http://mediafile.somedomain.com/my-file.mp3"),
+                    url: new Uri("https://media-files.talkdeskapp.com/calls/CA5f09fbfaad001a4cad22f178dfbdd4dd/recordings/0.mp3"),
                     destinationStream: destination,
                     bufferSize: bufferSize
                     );

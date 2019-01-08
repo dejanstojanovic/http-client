@@ -6,4 +6,8 @@
     <LangVersion>latest</LangVersion>
   </PropertyGroup>
 
+  <ItemGroup>
+    <PackageReference Include="ShellProgressBar" Version="4.2.0" />
+  </ItemGroup>
+
 </Project>
